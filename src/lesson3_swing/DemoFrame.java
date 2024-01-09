@@ -1,5 +1,6 @@
 package lesson3_swing;
 
+import javax.swing.table.DefaultTableModel;
 import lesson1.DongVat;
 import lesson1.DongVatService;
 
@@ -7,6 +8,31 @@ public class DemoFrame extends javax.swing.JFrame {
     private DongVatService dvServ = new DongVatService();
     public DemoFrame() {
         initComponents();
+
+        DongVat dv1 = new DongVat("Meo", 1, 4);
+        DongVat dv2 = new DongVat("Mun", 0, 6);
+        DongVat dv3 = new DongVat("Kiki", 1, 8);
+
+        this.dvServ.add(dv1);
+        this.dvServ.add(dv2);
+        this.dvServ.add(dv3);
+        this.loadTable();
+    }
+    
+    private void loadTable()
+    {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblDongVat.getModel();
+        dtm.setRowCount(0); // Xóa các dòng đang có trên JTable
+        for (DongVat dv: this.dvServ.getDs()) {
+            Object[] row = {
+                dv.getTen(),
+                dv.getGioiTinh(),
+                dv.getCanNang()
+            };
+            dtm.addRow(row);
+        }
+        
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -24,6 +50,8 @@ public class DemoFrame extends javax.swing.JFrame {
         btnLoad = new javax.swing.JButton();
         btnLamMoi = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblDongVat = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -107,15 +135,39 @@ public class DemoFrame extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        tblDongVat.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Tên", "Giới tính", "Cân nặng"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblDongVat);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 315, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(73, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(71, 71, 71))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -165,6 +217,7 @@ public class DemoFrame extends javax.swing.JFrame {
         
         DongVat dv = new DongVat(ten, gt, cn);
         this.dvServ.add(dv);
+        this.loadTable();
     }//GEN-LAST:event_btnThemActionPerformed
 
     public static void main(String args[]) {
@@ -208,6 +261,8 @@ public class DemoFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblDongVat;
     private javax.swing.JTextField txtCanNang;
     private javax.swing.JTextField txtGioiTinh;
     private javax.swing.JTextField txtTen;
