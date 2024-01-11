@@ -49,6 +49,9 @@ public class DemoFrame extends javax.swing.JFrame {
         btnThem = new javax.swing.JButton();
         btnLoad = new javax.swing.JButton();
         btnLamMoi = new javax.swing.JButton();
+        btnDel = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        btnExit = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDongVat = new javax.swing.JTable();
@@ -84,6 +87,27 @@ public class DemoFrame extends javax.swing.JFrame {
             }
         });
 
+        btnDel.setText("Xóa");
+        btnDel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDelActionPerformed(evt);
+            }
+        });
+
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
+        btnExit.setText("Exit");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -106,6 +130,12 @@ public class DemoFrame extends javax.swing.JFrame {
                         .addGap(0, 116, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnThem)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDel)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUpdate)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnExit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLamMoi)
                         .addGap(18, 18, 18)
@@ -129,7 +159,10 @@ public class DemoFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThem)
                     .addComponent(btnLoad)
-                    .addComponent(btnLamMoi))
+                    .addComponent(btnLamMoi)
+                    .addComponent(btnDel)
+                    .addComponent(btnUpdate)
+                    .addComponent(btnExit))
                 .addContainerGap())
         );
 
@@ -149,6 +182,11 @@ public class DemoFrame extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblDongVat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDongVatMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tblDongVat);
@@ -208,6 +246,13 @@ public class DemoFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        DongVat dv = this.getFormData();
+        this.dvServ.add(dv);
+        this.loadTable();
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private DongVat getFormData()
+    {
         String ten = this.txtTen.getText();
         String gioiTinhStr = this.txtGioiTinh.getText();
         String canNangStr = this.txtCanNang.getText();
@@ -216,9 +261,45 @@ public class DemoFrame extends javax.swing.JFrame {
         int cn = Integer.parseInt(canNangStr);
         
         DongVat dv = new DongVat(ten, gt, cn);
-        this.dvServ.add(dv);
+        return dv;
+    }
+    
+    private void tblDongVatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDongVatMouseClicked
+        int row = this.tblDongVat.getSelectedRow();
+        if (row == -1) {
+            return ;
+        }
+        
+        DongVat dv = this.dvServ.getDs().get(row);
+        String ten = dv.getTen();
+        int gioiTinh = dv.getGioiTinh();
+        int canNang = dv.getCanNang();
+        this.txtTen.setText(ten);
+        this.txtGioiTinh.setText(gioiTinh + "");
+    }//GEN-LAST:event_tblDongVatMouseClicked
+
+    private void btnDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelActionPerformed
+        // TODO add your handling code here:
+        int row = this.tblDongVat.getSelectedRow();
+        if(row == -1){
+            return;
+        }
+        this.dvServ.delete(row);
         this.loadTable();
-    }//GEN-LAST:event_btnThemActionPerformed
+    }//GEN-LAST:event_btnDelActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        int viTri = this.tblDongVat.getSelectedRow();
+        if (viTri == -1) return ;
+        
+        DongVat dv = this.getFormData();
+        this.dvServ.update(viTri, dv);
+        this.loadTable();
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnExitActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -253,9 +334,12 @@ public class DemoFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDel;
+    private javax.swing.JButton btnExit;
     private javax.swing.JButton btnLamMoi;
     private javax.swing.JButton btnLoad;
     private javax.swing.JButton btnThem;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

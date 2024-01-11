@@ -14,4 +14,14 @@ public class DongVatService {
     {
         return dsThuCung;
     }
+    
+    public void delete(int viTri)
+    {
+        this.dsThuCung.remove(viTri);
+    }
+    
+    public void update(int viTri, DongVat dvNew)
+    {
+        this.dsThuCung.set(viTri, dvNew);
+    }
 }
