@@ -212,20 +212,48 @@ public class QLMonHoc extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblMonHocMouseClicked
 
+    private MonHoc getFormData()
+    {
+        String ma = this.txtMa.getText();
+        String ten = this.txtTen.getText();
+        String soTCStr = this.txtSoTC.getText();
+        int soTC = 0;
+        try {
+            soTC = Integer.parseInt(soTCStr);
+            System.out.println("Ép kiểu thành công");
+        } catch (NumberFormatException e) {
+            System.out.println("Số tín chỉ phải là số");
+            e.printStackTrace();
+            
+            return null;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+            return null;
+        } finally {
+            System.out.println("Kết thúc");
+        }
+        
+        int trangThai = this.rdoActive.isSelected() ? 1 : 0;
+        MonHoc mh = new MonHoc(ma, ten, soTC, trangThai);
+        return mh;
+    }
+    
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         int row = this.tblMonHoc.getSelectedRow();
-        
         if (row == -1) {
             return ;
         }
         
-        String ma = this.txtMa.getText();
-        String ten = this.txtTen.getText();
-        String soTCStr = this.txtSoTC.getText();
-        int soTC = Integer.parseInt(soTCStr);
-        int trangThai = this.rdoActive.isSelected() ? 1 : 0;
+        MonHoc mh = this.getFormData();
+        if (mh == null) {
+            return ;
+        }
         
-        MonHoc mh = new MonHoc(ma, ten, soTC, trangThai);
         this.mhService.update(row, mh);
         this.loadTable();
     }//GEN-LAST:event_btnSuaActionPerformed
