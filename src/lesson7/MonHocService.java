@@ -8,9 +8,9 @@ public class MonHocService {
     public MonHocService()
     {
         this.listMH = new ArrayList<>();
-        this.listMH.add(new MonHoc("SOF201", "Lap trinh Java 1", 3, 1));
-        this.listMH.add(new MonHoc("SOF202", "Lap trinh Java 2", 3, 1));
-        this.listMH.add(new MonHoc("SOF203", "Lap trinh Java 3", 4, 1));
+        this.listMH.add(new MonHoc("SOF201", "Lap trinh Java 1", 3, 1, "UDPM"));
+        this.listMH.add(new MonHoc("SOF202", "Lap trinh Java 2", 3, 1, "UDPM"));
+        this.listMH.add(new MonHoc("SOF203", "Lap trinh Java 3", 4, 1, "UDPM"));
     }
     
     public ArrayList<MonHoc> getList()

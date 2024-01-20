@@ -5,15 +5,25 @@ public class MonHoc {
     private String ten;
     private int soTinChi;
     private int trangThai;
+    private String cNganh;
 
     public MonHoc() {
     }
 
-    public MonHoc(String ma, String ten, int soTinChi, int trangThai) {
+    public MonHoc(String ma, String ten, int soTinChi, int trangThai, String cNganh) {
         this.ma = ma;
         this.ten = ten;
         this.soTinChi = soTinChi;
         this.trangThai = trangThai;
+        this.cNganh = cNganh;
+    }
+
+    public String getcNganh() {
+        return cNganh;
+    }
+
+    public void setcNganh(String cNganh) {
+        this.cNganh = cNganh;
     }
 
     public String getMa() {
