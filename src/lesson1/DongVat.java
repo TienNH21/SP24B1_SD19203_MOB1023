@@ -1,6 +1,8 @@
 package lesson1;
 
-public class DongVat {
+import java.io.Serializable;
+
+public class DongVat implements Serializable {
     private String ten;
     private int gioiTinh;
     private int canNang;

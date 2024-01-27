@@ -15,7 +15,7 @@ public class DemoObjectIO {
     private static DongVat pet = new DongVat("A", 1, 10);
 
     public static void main(String[] args) {
-        String filename = "file2.txt";
+        String filename = "file1.txt";
         System.out.println("Bắt đầu ghi file");
         ghiFile(filename);
         System.out.println("Kết thúc ghi file");

@@ -1,10 +1,17 @@
 package lesson3_swing;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import lesson1.DongVat;
 import lesson1.DongVatService;
 
 public class DemoFrame extends javax.swing.JFrame {
+    private String fileName = "ds_pet.txt";
     private DongVatService dvServ = new DongVatService();
     public DemoFrame() {
         initComponents();
@@ -52,6 +59,8 @@ public class DemoFrame extends javax.swing.JFrame {
         btnDel = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
+        btnOpen = new javax.swing.JButton();
+        btnGhiFile = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDongVat = new javax.swing.JTable();
@@ -108,6 +117,20 @@ public class DemoFrame extends javax.swing.JFrame {
             }
         });
 
+        btnOpen.setText("Đọc file");
+        btnOpen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenActionPerformed(evt);
+            }
+        });
+
+        btnGhiFile.setText("Ghi file");
+        btnGhiFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGhiFileActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -128,7 +151,7 @@ public class DemoFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(txtCanNang, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 116, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btnThem)
                         .addGap(18, 18, 18)
                         .addComponent(btnDel)
@@ -137,9 +160,13 @@ public class DemoFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnExit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnLamMoi)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnLamMoi)
+                            .addComponent(btnOpen))
                         .addGap(18, 18, 18)
-                        .addComponent(btnLoad)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnGhiFile)
+                            .addComponent(btnLoad))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -155,7 +182,11 @@ public class DemoFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtGioiTinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnOpen)
+                    .addComponent(btnGhiFile))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThem)
                     .addComponent(btnLoad)
@@ -301,6 +332,41 @@ public class DemoFrame extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
 
+    private void btnGhiFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGhiFileActionPerformed
+        File f = new File(fileName);
+        if (f.exists() == false) {
+            return ;
+        }
+        
+        try {
+            FileOutputStream fos = new FileOutputStream(f);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            ArrayList<DongVat> ds = this.dvServ.getDs();
+            oos.writeObject(ds);
+            oos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnGhiFileActionPerformed
+
+    private void btnOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenActionPerformed
+        File f = new File(fileName);
+        if (f.exists() == false) {
+            return ;
+        }
+        
+        try {
+            FileInputStream fis = new FileInputStream(f);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            ArrayList<DongVat> ds = (ArrayList<DongVat>) ois.readObject();
+            this.dvServ.setDs(ds);
+            this.loadTable();
+            ois.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnOpenActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -336,8 +402,10 @@ public class DemoFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDel;
     private javax.swing.JButton btnExit;
+    private javax.swing.JButton btnGhiFile;
     private javax.swing.JButton btnLamMoi;
     private javax.swing.JButton btnLoad;
+    private javax.swing.JButton btnOpen;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel jLabel1;

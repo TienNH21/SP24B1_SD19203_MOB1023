@@ -15,6 +15,11 @@ public class DongVatService {
         return dsThuCung;
     }
     
+    public void setDs(ArrayList<DongVat> ds)
+    {
+        this.dsThuCung = ds;
+    }
+    
     public void delete(int viTri)
     {
         this.dsThuCung.remove(viTri);
