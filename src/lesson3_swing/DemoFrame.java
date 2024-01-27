@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 import lesson1.DongVat;
 import lesson1.DongVatService;
@@ -333,8 +334,15 @@ public class DemoFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnGhiFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGhiFileActionPerformed
-        File f = new File(fileName);
+        JFileChooser fileChooser = new JFileChooser();
+        if (fileChooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
+            System.out.println("Không chọn file");
+            return ;
+        }
+        
+        File f = fileChooser.getSelectedFile();
         if (f.exists() == false) {
+            System.out.println("File không tồn tại");
             return ;
         }
         
@@ -344,7 +352,9 @@ public class DemoFrame extends javax.swing.JFrame {
             ArrayList<DongVat> ds = this.dvServ.getDs();
             oos.writeObject(ds);
             oos.close();
+            System.out.println("OK");
         } catch (Exception e) {
+            System.out.println("Lỗi");
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnGhiFileActionPerformed
